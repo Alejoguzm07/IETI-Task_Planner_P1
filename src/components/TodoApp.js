@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import '../App.css';
-import {TodoList} from "./TodoList";
+import './TodoApp.css';
+import TodoList from "./TodoList";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import moment from "moment";
-import { TextField,Button } from '@material-ui/core';
+import { InputLabel, TextField, Button } from '@material-ui/core';
 
-class TodoApp extends Component {
+export class TodoApp extends Component {
 
     constructor(props) {
         super(props);
@@ -22,9 +24,9 @@ class TodoApp extends Component {
             <div className="App">
                 <form onSubmit={this.handleSubmit} className="todo-form">
                     <h3>New TODO</h3>
-                    <label htmlFor="text" className="right-margin">
+                    <InputLabel htmlFor="text" className="right-margin">
                         Text:
-                    </label>
+                    </InputLabel>
 
                     <TextField
                         id="text"
@@ -34,12 +36,11 @@ class TodoApp extends Component {
 
                     <br/>
                     <br/>
-                    <label htmlFor="priority" className="right-margin">
+                    <InputLabel htmlFor="priority" className="right-margin">
                         Priority:
-                    </label>
+                    </InputLabel>
 
                     <TextField
-                        onChange={this.handlePriorityChange}
                         id="priority"
                         type="number"
                         onChange={this.handlePriorityChange}
@@ -48,15 +49,14 @@ class TodoApp extends Component {
                     <br/>
                     <br/>
 
-                    <TextField
-                        onChange={this.handleDateChange}
+                    <DatePicker
                         id="due-date"
-                        type="date"
-                        label="date"
+                        selected={this.state.dueDate}
+                        placeholderText="Due date"
                         onChange={this.handleDateChange}>
-                    </TextField>
+                    </DatePicker>
                     <br/>
-                    <Button>
+                    <Button type = "submit" variant = "outlined" style={{fill:"#A23109"}}>
                         Add #{this.state.items.length + 1}
                     </Button>
                 </form>
@@ -107,5 +107,3 @@ class TodoApp extends Component {
     }
 
 }
-
-export { TodoApp }

@@ -1,14 +1,15 @@
 import React from 'react';
+import { TableRow, TableCell } from '@material-ui/core';
 
 export class Todo extends React.Component {
 
     render() {
         return (
-            <tr>
-                <td>{this.props.text}</td>
-                <td>{this.props.priority}</td>
-                <td>{this.props.dueDate.format('DD-MM-YYYY')}</td>
-            </tr>
+            <TableRow>
+                <TableCell>{this.props.text}</TableCell>
+                <TableCell>{this.props.priority}</TableCell>
+                <TableCell>{this.props.dueDate.format('DD-MM-YYYY')}</TableCell>
+            </TableRow>
         );
     }
 

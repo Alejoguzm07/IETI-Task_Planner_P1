@@ -3,24 +3,17 @@ import logo from './components/logo.svg';
 import './App.css';
 import { Login } from './components/Login';
 import { TodoApp } from './components/TodoApp';
-import {BrowserRouter as Router,Route} from 'react-router-dom'
+import {BrowserRouter as Router,Route,Switch} from 'react-router-dom'
 
-class App extends Component {
+export default class App extends Component {
 
     constructor(){
         super();
-        localStorage.setItem('admin', "Root-root1");
-        localStorage.setItem("isLogged", false);
+        localStorage.setItem('admin', 'admin');
     }
 
     render() {
-        var vista;
-        var logged = localStorage.getItem("isLogged");
-        if(logged === true) {
-            vista =  <Route path="/todo" component={TodoAppView}/>            
-        } else {
-            vista = <Route exact path="/" component={LoginView}/>
-        }
+        
         return (
             <Router>
                 <div className="App">
@@ -31,7 +24,9 @@ class App extends Component {
                     <br/>
                     <br/>
                     <div>
-                        {vista}                        
+                        <Switch>
+                            <Route exact path = "/" component = {mainView}/>    
+                        </Switch>                        
                     </div>
                 </div>
             </Router>
@@ -39,12 +34,9 @@ class App extends Component {
     }
 }
 
-export default App;
-
-const LoginView = () => (
-    <Login/>
-);
-
-const TodoAppView = () => (
-    <TodoApp/>
+const mainView = () => (
+    <div>
+        {localStorage.getItem('isLogged') === 'true' ? <TodoApp /> : <Login />}        
+    </div>
+    
 );
