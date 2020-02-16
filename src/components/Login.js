@@ -66,6 +66,8 @@ export class Login extends React.Component{
                                 Sign in
                             </Button>
                         </form>
+                        <br />
+                        <Typography>Create Account</Typography>
                     </Paper>
                 </main>
             </React.Fragment>
