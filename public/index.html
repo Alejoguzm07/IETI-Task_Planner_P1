@@ -21,6 +21,7 @@
     -->
     <title>TODO App</title>
 </head>
+
 <body>
 <noscript>
     You need to enable JavaScript to run this app.
@@ -36,5 +37,12 @@
   To begin the development, run `npm start` or `yarn start`.
   To create a production bundle, use `npm run build` or `yarn build`.
 -->
+<script>
+  if('serviceWorker' in navigator) {
+    navigator.serviceWorker
+             .register('/sw.js')
+             .then(function() { console.log("Service Worker Registered"); });
+  }
+  </script>
 </body>
 </html>

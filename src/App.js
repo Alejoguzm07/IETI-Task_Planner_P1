@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import logo from './components/logo.svg';
 import './App.css';
 import { Login } from './components/Login';
-import { TodoApp } from './components/TodoApp';
+import { TaskPlannerApp } from './components/TaskPlannerApp';
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom'
 
 export default class App extends Component {
@@ -36,7 +36,7 @@ export default class App extends Component {
 
 const mainView = () => (
     <div>
-        {localStorage.getItem('isLogged') === 'true' ? <TodoApp /> : <Login />}        
+        {localStorage.getItem('isLogged') === 'true' ? <TaskPlannerApp /> : <Login />}        
     </div>
     
 );

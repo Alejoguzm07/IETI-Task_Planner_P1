@@ -9,7 +9,7 @@ import FaceIcon from '@material-ui/icons/Face';
 import moment from "moment";
 import { InputLabel, TextField, Button, Typography } from '@material-ui/core';
 
-export class TodoApp extends Component {
+export class TaskPlannerApp extends Component {
 
     constructor(props) {
         super(props);
@@ -100,7 +100,7 @@ export class TodoApp extends Component {
                 </form>
                 <br/>
                 <br/>
-                <TaskList todoList={this.state.items}/>
+                <TaskList taskList={this.state.items}/>
             </div>
         );
     }
