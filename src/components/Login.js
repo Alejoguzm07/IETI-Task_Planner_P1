@@ -17,7 +17,7 @@ export class Login extends React.Component{
         e.preventDefault();  
         var email = document.querySelector('#email').value;
         var pass = document.querySelector('#password').value;
-        var correctPass = localStorage.getItem(email);             
+        var correctPass = JSON.parse(localStorage.getItem(email)).password;             
         if(correctPass === pass){
             localStorage.setItem("isLogged", 'true');
             window.location.href = "/";

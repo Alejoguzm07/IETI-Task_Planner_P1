@@ -9,7 +9,7 @@ export default class App extends Component {
 
     constructor(){
         super();
-        localStorage.setItem('admin', 'admin');
+        localStorage.setItem('admin', JSON.stringify({"password":'admin'}));
     }
 
     render() {

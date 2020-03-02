@@ -12,7 +12,6 @@ export default class TaskList extends React.Component {
                 </div>               
             );
         });
-
         return (
             <div>
                 {todoList}

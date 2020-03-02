@@ -63,3 +63,11 @@ td, th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
+
+.checkFab {
+    background-color: gray;
+    position: relative;
+    float: right;
+    right: 1em;
+    top: -1.2em;
+}
