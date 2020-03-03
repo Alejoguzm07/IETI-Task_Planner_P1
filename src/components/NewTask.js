@@ -1,17 +1,16 @@
 import React, {Component} from 'react';
 import './TodoApp.css';
-import TaskList from "./TaskList";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from "moment";
 import CheckIcon from '@material-ui/icons/Check';
-import { InputLabel, TextField, Fab, Typography } from '@material-ui/core';
+import { InputLabel, TextField, Fab } from '@material-ui/core';
 
 export class NewTask extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {items: [], description: '', status: "in progress", dueDate: moment(), responsibleName: '' , responsibleEmail: ''};
+        this.state = {description: '', status: "in progress", dueDate: moment(), responsibleName: '' , responsibleEmail: ''};
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
         this.handleStatusChange = this.handleStatusChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -84,9 +83,9 @@ export class NewTask extends Component {
                         onChange={this.handleDateChange}>
                     </DatePicker>
                     <br/>
-                    <Fab type = "submit" variant = "round" size="small" className="checkFab">
+                    <Fab type = "submit" variant = "round" size="small" className="fab">
                         <CheckIcon />
-                    </Fab>
+                    </Fab>                      
                 </form>
                 <br/>
                 <br/>
@@ -125,7 +124,6 @@ export class NewTask extends Component {
     }
 
     handleSubmit(e) {
-
         e.preventDefault();
 
         if (!this.state.description.length || !this.state.status.length || !this.state.dueDate || !this.state.responsibleEmail.length || !this.state.responsibleName.length)
@@ -142,19 +140,14 @@ export class NewTask extends Component {
             dueDate: this.state.dueDate,
 
         };
-        this.setState(prevState => ({
-            items: prevState.items.concat(newItem),
-            description: '',
-            status: '',
-            dueDate: moment(),
-            Responsible: {
-                name: '',
-                email: ''
-            }
-        }));
         var storage = JSON.parse(localStorage.getItem('admin'))
-        storage.items = this.state.items.concat(newItem)
+        if (storage.hasOwnProperty("items")) {
+            storage.items = storage.items.concat(newItem)
+        } else {
+            storage.items = [newItem]
+        }
         localStorage.setItem('admin', JSON.stringify(storage));
+        window.location.href = "/";
     }
 
 }

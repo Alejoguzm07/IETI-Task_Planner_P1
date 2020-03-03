@@ -4,12 +4,17 @@ import './App.css';
 import { Login } from './components/Login';
 import { TaskPlannerApp } from './components/TaskPlannerApp';
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom'
+import { NewTask } from './components/NewTask';
 
 export default class App extends Component {
 
     constructor(){
         super();
-        localStorage.setItem('admin', JSON.stringify({"password":'admin'}));
+        let storage = JSON.parse(localStorage.getItem("admin"))
+        if (!storage) {
+            localStorage.setItem('admin', JSON.stringify({"password":'admin'}));
+        } 
+        
     }
 
     render() {
@@ -26,6 +31,7 @@ export default class App extends Component {
                     <div>
                         <Switch>
                             <Route exact path = "/" component = {mainView}/>    
+                            <Route exact path = "/newTask" component = {newTask}/>
                         </Switch>                        
                     </div>
                 </div>
@@ -39,4 +45,8 @@ const mainView = () => (
         {localStorage.getItem('isLogged') === 'true' ? <TaskPlannerApp /> : <Login />}        
     </div>
     
+);
+
+const newTask = () => (
+    <NewTask />   
 );

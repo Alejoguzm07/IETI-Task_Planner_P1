@@ -5,8 +5,8 @@ import Drawer from '@material-ui/core/SwipeableDrawer';
 import 'react-datepicker/dist/react-datepicker.css';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import FaceIcon from '@material-ui/icons/Face';
-import { Typography } from '@material-ui/core';
-import { NewTask } from './NewTask';
+import { Typography, Fab } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 
 export class TaskPlannerApp extends Component {
 
@@ -35,10 +35,12 @@ export class TaskPlannerApp extends Component {
                     Sign Out
                     <ExitToAppIcon></ExitToAppIcon>
                 </Drawer>
-                <NewTask></NewTask>
                 <br/>
                 <br/>
                 <TaskList taskList={items}/>
+                <Fab type = "submit" variant = "round" size="small" className="fab" href="/newTask">
+                    <AddIcon />
+                </Fab>
             </div>
         );
     }

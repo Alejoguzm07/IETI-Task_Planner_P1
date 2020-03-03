@@ -2,6 +2,7 @@ import React from 'react';
 import { Typography, Card } from '@material-ui/core';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import AlarmOnIcon from '@material-ui/icons/AlarmOn';
+import moment from "moment";
 import AlarmIcon from '@material-ui/icons/Alarm';
 import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
 
@@ -34,7 +35,7 @@ export class Task extends React.Component {
                 <Typography>{this.props.description}</Typography>
                 {icon}
                 <Typography>{status}</Typography>                
-                <Typography>{this.props.dueDate.format('DD-MM-YYYY')}</Typography>
+                <Typography>{moment(this.props.dueDate).format('DD/MM/YYYY')}</Typography>
                 <Typography>{responsibleName}</Typography>                
             </Card>                
         );
