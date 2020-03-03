@@ -10,9 +10,9 @@ export default class App extends Component {
 
     constructor(){
         super();
-        let storage = JSON.parse(localStorage.getItem("admin"))
+        let storage = JSON.parse(localStorage.getItem("isLogged"))
         if (!storage) {
-            localStorage.setItem('admin', JSON.stringify({"password":'admin'}));
+            localStorage.setItem('admin', JSON.stringify({"password":'admin', "fullname":"administrador administrando"}));
         } 
         
     }
@@ -40,12 +40,20 @@ export default class App extends Component {
     }
 }
 
-const mainView = () => (
-    <div>
-        {localStorage.getItem('isLogged') === 'true' ? <TaskPlannerApp /> : <Login />}        
-    </div>
+const mainView = () => {
+    let storage = JSON.parse(localStorage.getItem('isLogged'))
+    if (storage === null) {
+        storage = {"isLogged":"false"}
+    }
+    return (
+        <div>            
+            {storage.loggedIn === 'true' ? <TaskPlannerApp /> : <Login />}
+        </div>
+    )
     
-);
+}
+    
+    
 
 const newTask = () => (
     <NewTask />   

@@ -12,7 +12,9 @@ export class TaskPlannerApp extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {user: {name: "Test User", email: "test.user@mail.com"}};
+        let email = JSON.parse(localStorage.getItem("isLogged")).user
+        let user = JSON.parse(localStorage.getItem(email))
+        this.state = {user: {name: user.fullname, email: email}};
     }
 
     getItems = () => {

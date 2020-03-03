@@ -18,7 +18,7 @@ export class Task extends React.Component {
             icon = <AlarmOnIcon></AlarmOnIcon>
             status = this.props.status;
         } else if (this.props.status === "in progress") {
-            icon = <AlarmIcon></AlarmIcon>
+            icon = <AlarmIcon />
             status = this.props.status;
         } else {
             status = "No Status";
