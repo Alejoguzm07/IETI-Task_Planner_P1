@@ -71,3 +71,8 @@ tr:nth-child(even) {
     right: 1em;
     top: -1.2em;
 }
+
+.menuFab {
+    position: fixed;
+    right: 45%;
+}

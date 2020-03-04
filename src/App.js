@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import logo from './components/logo.svg';
 import './App.css';
 import { Login } from './components/Login';
+import { UserProfile } from "./components/UserProfile";
 import { TaskPlannerApp } from './components/TaskPlannerApp';
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom'
 import { NewTask } from './components/NewTask';
@@ -32,6 +33,7 @@ export default class App extends Component {
                         <Switch>
                             <Route exact path = "/" component = {mainView}/>    
                             <Route exact path = "/newTask" component = {newTask}/>
+                            <Route exact path = "/userProfile" component = {userProfile}/>
                         </Switch>                        
                     </div>
                 </div>
@@ -51,10 +53,12 @@ const mainView = () => {
         </div>
     )
     
-}
-    
-    
+}    
 
 const newTask = () => (
     <NewTask />   
+);
+
+const userProfile = () => (
+    <UserProfile />   
 );
