@@ -4,7 +4,7 @@ import { Snackbar } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import { SnackbarContent } from '@material-ui/core';
 
-export class UserProfile extends Component {
+export class Filter extends Component {
 
     constructor(props) {
         super(props);

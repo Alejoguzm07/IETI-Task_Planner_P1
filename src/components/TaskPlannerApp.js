@@ -10,6 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import FaceIcon from '@material-ui/icons/Face';
 import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
+import FilterListIcon from '@material-ui/icons/FilterList';
 
 export class TaskPlannerApp extends Component {
 
@@ -61,6 +62,9 @@ export class TaskPlannerApp extends Component {
                 <TaskList taskList={items}/>
                 <Fab type = "submit" variant = "round" size="small" className="fab" href="/newTask">
                     <AddIcon />
+                </Fab>
+                <Fab type = "submit" variant = "round" size="small" className="fab">
+                    <FilterListIcon />
                 </Fab>
             </div>
         );
