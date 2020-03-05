@@ -1,88 +1,85 @@
 import React, {Component} from 'react';
 import { Typography, Fab, TextField } from '@material-ui/core';
-import { Snackbar } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
-import { SnackbarContent } from '@material-ui/core';
+import ClearIcon from '@material-ui/icons/Clear';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from "moment";
 
 export class Filter extends Component {
 
     constructor(props) {
         super(props);
-        let email = JSON.parse(localStorage.getItem("isLogged")).user
         this.state = {
-            user: JSON.parse(localStorage.getItem(email)),
-            name: "", email: "", password: "", confirmPassword:"",
-            alert: false, alertMessage:""
+            status: "", dueDate: moment(), responsibleName: '' , responsibleEmail: '', date:false
         }
-        this.state.user.email = email
     }
-    handleEmailField = () => event => {
-        this.setState({email: event.target.value})
-    }
-
-    handleNameField = () => event => {
-        this.setState({name: event.target.value})
+    handleResponsibleNameChange = () => event => {
+        this.setState({responsibleName: event.target.value})
     }
 
-    handlePasswordField = () => event => {
-        this.setState({password: event.target.value})
+    handleResponsibleEmailChange = () => event => {
+        this.setState({responsibleEmail: event.target.value})
     }
 
-    handleConfirmPasswordField = () => event => {
-        this.setState({confirmPassword: event.target.value})
+    handleStatusChange = () => event => {
+        this.setState({status: event.target.value})
     }
 
-    throwAlert = (message) => {
-        this.setState({alertMessage:message, alert:true})
+    handleDateChange = (date) => {
+        this.setState({
+            dueDate: date, date:true
+        });
     }
 
-    closeAlert = () => {
-        this.setState({alert: false})
+    handleClear = () => event => {
+        this.setState({status: "", dueDate: moment(), responsibleName: '' , responsibleEmail: '', date:false})
+        localStorage.removeItem("filter")
     }
 
     handleSubmit = () => event => {
-        let newUser = this.state.user
-        if (this.state.password !== "" || this.state.confirmPassword !== "") {
-            if (this.state.password !== this.state.confirmPassword) {
-                this.throwAlert("The passwords do not match")
-                return
+        let filter = {}
+        if (this.state.status !== "") {
+            if (this.state.status === "completed" || this.state.status === "ready" || this.state.status === "in progress") {
+                filter.status = this.state.status
             } else {
-                newUser.password = this.state.password
-            }            
-        } else {
-            newUser.password = this.state.user.password
+                filter.status = "No Status";
+            }
         }
-
-        if (this.state.name !== "") {
-            newUser.name = this.state.name
-        } else {
-            newUser.name = this.state.user.name
+        if (this.state.responsibleName !== "") {
+            filter.responsibleName = this.state.responsibleName
+            
         }
-
-        if (this.state.email !== "") {
-            newUser.email = this.state.email
-            localStorage.setItem("isLogged", JSON.stringify({"loggedIn":'true',"user":this.state.email}));
-            localStorage.removeItem(this.state.user.email)
-        } else {
-            newUser.email = this.state.user.email
+        if (this.state.responsibleEmail !== "") {
+            filter.responsibleEmail = this.state.responsibleEmail
+            
         }
-        localStorage.setItem(newUser.email, JSON.stringify({"password":newUser.password, "fullname":newUser.name}));
-        window.location.href = "/";
+        if (this.state.date !== false) {
+            filter.dueDate = this.state.dueDate
+            
+        }
+        localStorage.setItem("filter", JSON.stringify(filter));
     }
-
+x
     render() {
         return (
-            <div className="App">
-                <Snackbar open={this.state.alert} autoHideDuration={6000} onClose={this.closeAlert}>
-                    <SnackbarContent message={this.state.alertMessage}></SnackbarContent>
-                </Snackbar>
-                <Typography variant="h2">User Profile</Typography>
-                <TextField label="email" defaultValue={this.state.user.email} onChange={this.handleEmailField()}/> <br/>
-                <TextField label="name" defaultValue={this.state.user.fullname} onChange={this.handleNameField()}/> <br/>
-                <TextField label="password" defaultValue={this.state.user.password} type="password" onChange={this.handlePasswordField()}/> <br/>
-                <TextField defaultValue={this.state.user.password} label="confirm password" type="password" onChange={this.handleConfirmPasswordField()}/> <br/>
-                <Fab type = "submit" size="small" onClick={this.handleSubmit()}>
+            <div className={"modal"}>
+                <Typography variant="h2">Filter Tasks</Typography>
+                <TextField label="responsible email" defaultValue={this.state.responsibleEmail} value={this.state.responsibleEmail} onChange={this.handleResponsibleEmailChange()}/> <br/>
+                <TextField label="responsible name" defaultValue={this.state.responsibleName} value={this.state.responsibleName} onChange={this.handleResponsibleNameChange()}/> <br/>
+                <TextField label="status" defaultValue={this.state.status} value={this.state.status} onChange={this.handleStatusChange()}/> <br/>
+                <DatePicker
+                        id="due-date"
+                        selected={this.state.dueDate}
+                        placeholderText="Due date"
+                        onChange={this.handleDateChange}>
+                    </DatePicker>
+                <br/>
+                <Fab type = "submit" size="small" variant="extended" onClick={this.handleSubmit()}>
                     <CheckIcon fontSize="small"/>
+                </Fab>
+                <Fab type = "submit" size="small" variant="extended" onClick={this.handleClear()}>
+                    <ClearIcon fontSize="small"/>
                 </Fab>
             </div>
         );

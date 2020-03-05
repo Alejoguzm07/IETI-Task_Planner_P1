@@ -11,6 +11,8 @@ import FaceIcon from '@material-ui/icons/Face';
 import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import Modal from '@material-ui/core/Modal';
+import { Filter } from './Filter';
 
 export class TaskPlannerApp extends Component {
 
@@ -18,7 +20,7 @@ export class TaskPlannerApp extends Component {
         super(props);
         let email = JSON.parse(localStorage.getItem("isLogged")).user
         let user = JSON.parse(localStorage.getItem(email))
-        this.state = {user: {name: user.fullname, email: email}, drawer:false};
+        this.state = {user: {name: user.fullname, email: email}, drawer:false, modal:false};
     }
 
     getItems = () => {
@@ -37,11 +39,22 @@ export class TaskPlannerApp extends Component {
     closeToggle = () => event => {
         this.setState({drawer:false})
     }
+    
+    openModal = () => event => {
+        this.setState({modal:true})
+    }
+
+    closeModal = () => event => {
+        this.setState({modal:false})
+    }
 
     render() {
         var items = this.getItems()
         return (
             <div className="App">
+                <Modal open={this.state.modal} onClose={this.closeModal()}>
+                    <Filter></Filter>
+                </Modal>
                 <Drawer open={this.state.drawer} onClose={this.closeToggle()}>
                     <Typography align="center"> User Profile </Typography>
                     <Fab type = "submit"  size="small" href="/userProfile">
@@ -59,11 +72,11 @@ export class TaskPlannerApp extends Component {
                 </IconButton>
                 <br/>
                 <br/>                
-                <TaskList taskList={items}/>
+                <TaskList taskList={items} filter={JSON.parse(localStorage.getItem("filter"))}/>
                 <Fab type = "submit" variant = "round" size="small" className="fab" href="/newTask">
                     <AddIcon />
                 </Fab>
-                <Fab type = "submit" variant = "round" size="small" className="fab">
+                <Fab type = "submit" variant = "round" size="small" className="fab" onClick={this.openModal()}>
                     <FilterListIcon />
                 </Fab>
             </div>

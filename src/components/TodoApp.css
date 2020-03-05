@@ -76,3 +76,8 @@ tr:nth-child(even) {
     position: fixed;
     right: 45%;
 }
+
+.modal {
+    background-color: #dddddd;
+    text-align: center;
+}

@@ -56,7 +56,7 @@ export class UserProfile extends Component {
         if (this.state.name !== "") {
             newUser.name = this.state.name
         } else {
-            newUser.name = this.state.user.name
+            newUser.name = this.state.user.fullname
         }
 
         if (this.state.email !== "") {

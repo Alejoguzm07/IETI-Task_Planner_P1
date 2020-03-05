@@ -25,18 +25,22 @@ export class Task extends React.Component {
             icon = <PanoramaFishEyeIcon></PanoramaFishEyeIcon>
         }
         var responsibleName = null;
+        var responsibleEmail = null;
         if (this.props.responsible === undefined) {
             responsibleName = "No Assigned"
+            responsibleEmail = "No Assigned"
         } else {
             responsibleName = this.props.responsible.name
+            responsibleEmail = this.props.responsible.email
         }
         return (
             <Card variant="outlined">
-                <Typography>{this.props.description}</Typography>
+                <Typography variant="h5">{this.props.description}</Typography>
                 {icon}
                 <Typography>{status}</Typography>                
                 <Typography>{moment(this.props.dueDate).format('DD/MM/YYYY')}</Typography>
-                <Typography>{responsibleName}</Typography>                
+                <Typography>{responsibleName}</Typography>
+                <Typography>{responsibleEmail}</Typography>
             </Card>                
         );
     }
