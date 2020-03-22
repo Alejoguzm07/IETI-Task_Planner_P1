@@ -40,7 +40,7 @@ export class TaskPlannerApp extends Component {
     }
 
     componentDidMount() {
-        fetch('http://localhost:8080/tasks')
+        fetch('https://ieti-todo-back.herokuapp.com/tasks')
             .then(response => response.json())
             .then(data => {
                 let tasks = [];                
