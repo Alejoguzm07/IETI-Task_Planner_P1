@@ -1,3 +1,10 @@
-https://github.com/Alejoguzm07/IETI-Task_Planner_P1
+Back
+-----------------
+Git: https://github.com/Alejoguzm07/IETI-Task_Planner_API.git
+HEROKU: https://ieti-todo-back.herokuapp.com/
 
-https://ieti-todo-app.herokuapp.com/
+Front
+-----------------
+GIT: https://github.com/Alejoguzm07/IETI-Task_Planner_P1
+HEROKU: https://ieti-todo-app.herokuapp.com/
+FIREBASE: https://taks-planner-app-5cd1e.firebaseapp.com/
