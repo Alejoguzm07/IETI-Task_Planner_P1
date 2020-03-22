@@ -13,7 +13,7 @@ export default class App extends Component {
         super();
         let storage = JSON.parse(localStorage.getItem("isLogged"))
         if (!storage) {
-            localStorage.setItem('admin', JSON.stringify({"password":'admin', "fullname":"administrador administrando"}));
+            localStorage.setItem('admin', JSON.stringify({"password":'admin', "fullname":"administrador"}));
         } 
         
     }

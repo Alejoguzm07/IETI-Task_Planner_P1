@@ -20,16 +20,7 @@ export class TaskPlannerApp extends Component {
         super(props);
         let email = JSON.parse(localStorage.getItem("isLogged")).user
         let user = JSON.parse(localStorage.getItem(email))
-        this.state = {user: {name: user.fullname, email: email}, drawer:false, modal:false};
-    }
-
-    getItems = () => {
-        var itemsStored = JSON.parse(localStorage.getItem('admin'))
-        if (itemsStored.hasOwnProperty("items")) {
-            return itemsStored.items
-        } else {
-            return []
-        }
+        this.state = {tasksList: [], user: {name: user.fullname, email: email}, drawer:false, modal:false};
     }
 
     openToggle = () => event => {
@@ -48,8 +39,29 @@ export class TaskPlannerApp extends Component {
         this.setState({modal:false})
     }
 
+    componentDidMount() {
+        fetch('http://localhost:8080/tasks')
+            .then(response => response.json())
+            .then(data => {
+                let tasks = [];                
+                data.forEach(function (task) {
+                    tasks.push({
+                        description: task.description,
+                        responsible: {
+                            name: task.user.fullname,
+                            email: task.user.email
+                        },
+                        dueDate: task.dueDate,
+                        status: task.status
+                    })
+
+                });
+                this.setState({tasksList: tasks});
+            });
+    }
+
     render() {
-        var items = this.getItems()
+        var items = this.state.tasksList
         return (
             <div className="App">
                 <Modal open={this.state.modal} onClose={this.closeModal()}>

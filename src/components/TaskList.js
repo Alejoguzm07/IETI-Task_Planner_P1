@@ -4,7 +4,7 @@ import moment from "moment";
 
 export default class TaskList extends React.Component {
 
-    render() {
+    render() {        
         const todoList = this.props.taskList.map((task, i) => {
             let flag = true
             if (this.props.filter !== null) {

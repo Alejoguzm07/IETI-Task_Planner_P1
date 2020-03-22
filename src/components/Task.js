@@ -8,20 +8,20 @@ import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
 
 export class Task extends React.Component {
 
-    render() {
+    render() {        
         var icon = null;
         var status = null;
-        if (this.props.status === "completed") {
+        if (this.props.status === "COMPLETED") {
             icon = <CheckCircleOutlineIcon></CheckCircleOutlineIcon>
             status = this.props.status;
-        } else if (this.props.status === "ready") {
+        } else if (this.props.status === "READY") {
             icon = <AlarmOnIcon></AlarmOnIcon>
             status = this.props.status;
-        } else if (this.props.status === "in progress") {
+        } else if (this.props.status === "IN_PROGRESS") {
             icon = <AlarmIcon />
             status = this.props.status;
         } else {
-            status = "No Status";
+            status = "NO_STATUS";
             icon = <PanoramaFishEyeIcon></PanoramaFishEyeIcon>
         }
         var responsibleName = null;

@@ -1,6 +1,6 @@
 Back
 -----------------
-Git: https://github.com/Alejoguzm07/IETI-Task_Planner_API.git
+GIT: https://github.com/Alejoguzm07/IETI-Task_Planner_API.git
 HEROKU: https://ieti-todo-back.herokuapp.com/
 
 Front
