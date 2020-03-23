@@ -19,7 +19,6 @@ export class Login extends React.Component {
         e.preventDefault();
         var email = document.querySelector('#email').value;
         var pass = document.querySelector('#password').value;
-        const correctPass = JSON.parse(localStorage.getItem(email)).password;
         axios.post('http://localhost:8080/login', {
             email: email,
             password: pass
@@ -31,9 +30,6 @@ export class Login extends React.Component {
             .catch(error => {
                 console.log(error);
             });
-        if (correctPass === pass) {
-            
-        }
         window.location.href = "/";
     }
 

@@ -1,20 +1,20 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './TodoApp.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from "moment";
 import CheckIcon from '@material-ui/icons/Check';
-import { InputLabel, TextField, Fab } from '@material-ui/core';
+import axios from 'axios';
+import { InputLabel, TextField, Fab, Select, MenuItem } from '@material-ui/core';
 
 export class NewTask extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {description: '', status: "in progress", dueDate: moment(), responsibleName: '' , responsibleEmail: ''};
+        this.state = { description: '', status: "", dueDate: moment(), responsibleEmail: '', indicatedUser: null };
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
         this.handleStatusChange = this.handleStatusChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
-        this.handleResponsibleNameChange = this.handleResponsibleNameChange.bind(this);
         this.handleResponsibleEmailChange = this.handleResponsibleEmailChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -36,21 +36,8 @@ export class NewTask extends Component {
                         value={this.state.description}>
                     </TextField>
 
-                    <br/>
-                    <br/>
-
-                    <InputLabel htmlFor="responsibleName" className="right-margin">
-                        Responsible Name:
-                    </InputLabel>
-
-                    <TextField
-                        id="responsibleName"
-                        onChange={this.handleResponsibleNameChange}
-                        value={this.state.responsibleName}>
-                    </TextField>
-
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
 
                     <InputLabel htmlFor="responsibleEmail" className="right-margin">
                         Responsible Email:
@@ -62,19 +49,23 @@ export class NewTask extends Component {
                         value={this.state.responsibleEmail}>
                     </TextField>
 
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
                     <InputLabel htmlFor="status" className="right-margin">
                         Status:
                     </InputLabel>
-
-                    <TextField
+                    <Select
                         id="status"
+                        value={this.state.status}
                         onChange={this.handleStatusChange}
-                        value={this.state.priority}>
-                    </TextField>
-                    <br/>
-                    <br/>
+                    >
+                        <MenuItem value={"IN_PROGRESS"}>in progress</MenuItem>
+                        <MenuItem value={"COMPLETED"}>completed</MenuItem>
+                        <MenuItem value={"READY"}>ready</MenuItem>
+                        <MenuItem value={"NO_STATUS"}>unknown</MenuItem>
+                    </Select>
+                    <br />
+                    <br />
 
                     <DatePicker
                         id="due-date"
@@ -82,13 +73,13 @@ export class NewTask extends Component {
                         placeholderText="Due date"
                         onChange={this.handleDateChange}>
                     </DatePicker>
-                    <br/>
-                    <Fab type = "submit" variant = "round" size="small" className="fab">
+                    <br />
+                    <Fab type="submit" variant="round" size="small" className="fab">
                         <CheckIcon />
-                    </Fab>                      
+                    </Fab>
                 </form>
-                <br/>
-                <br/>
+                <br />
+                <br />
             </div>
         );
     }
@@ -96,12 +87,6 @@ export class NewTask extends Component {
     handleDescriptionChange(e) {
         this.setState({
             description: e.target.value
-        });
-    }
-
-    handleResponsibleNameChange(e) {
-        this.setState({
-            responsibleName: e.target.value
         });
     }
 
@@ -121,33 +106,43 @@ export class NewTask extends Component {
         this.setState({
             dueDate: date
         });
-    }
+    }    
 
     handleSubmit(e) {
         e.preventDefault();
 
-        if (!this.state.description.length || !this.state.status.length || !this.state.dueDate || !this.state.responsibleEmail.length || !this.state.responsibleName.length)
+        if (!this.state.description.length || !this.state.status.length || !this.state.dueDate || !this.state.responsibleEmail.length) {
             return;
-
-        const newItem = {
-            description: this.state.description,
-            status: this.state.status,
-            responsible: 
-            {
-                name: this.state.responsibleName,
-                email: this.state.responsibleEmail
-            },
-            dueDate: this.state.dueDate,
-
-        };
-        var storage = JSON.parse(localStorage.getItem('admin'))
-        if (storage.hasOwnProperty("items")) {
-            storage.items = storage.items.concat(newItem)
-        } else {
-            storage.items = [newItem]
         }
-        localStorage.setItem('admin', JSON.stringify(storage));
-        window.location.href = "/";
+
+        axios.get('http://localhost:8080/api/users/email/' + this.state.responsibleEmail, {
+            "headers": { "authorization": "Bearer " + localStorage.getItem("token") }
+        })
+            .then(response => {
+                if (response.data !== null) {
+                    axios.post('http://localhost:8080/api/tasks/',
+                        {
+                            description: this.state.description,
+                            status: this.state.status,
+                            dueDate: this.state.dueDate,
+                            user: response.data,
+                            id: ""
+                        },
+                        {
+                            "headers": { "authorization": "Bearer " + localStorage.getItem("token") }
+                        })
+                        .then(res => {
+                            window.location.href = "/";
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                }
+
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
 }

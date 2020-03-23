@@ -9,15 +9,6 @@ import { NewTask } from './components/NewTask';
 
 export default class App extends Component {
 
-    constructor(){
-        super();
-        let storage = JSON.parse(localStorage.getItem("isLogged"))
-        if (!storage) {
-            localStorage.setItem('admin', JSON.stringify({"password":'admin', "fullname":"administrador"}));
-        } 
-        
-    }
-
     render() {
         
         return (

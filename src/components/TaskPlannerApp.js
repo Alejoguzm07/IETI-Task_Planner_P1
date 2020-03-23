@@ -19,28 +19,7 @@ export class TaskPlannerApp extends Component {
 
     constructor(props) {
         super(props);
-        let email = JSON.parse(localStorage.getItem("isLogged")).user
-        let user = JSON.parse(localStorage.getItem(email))
-        this.state = { tasksList: [], user: { name: user.fullname, email: email }, drawer: false, modal: false };
-    }
-
-    openToggle = () => event => {
-        this.setState({ drawer: true })
-    }
-
-    closeToggle = () => event => {
-        this.setState({ drawer: false })
-    }
-
-    openModal = () => event => {
-        this.setState({ modal: true })
-    }
-
-    closeModal = () => event => {
-        this.setState({ modal: false })
-    }
-
-    componentDidMount() {
+        let email = JSON.parse(localStorage.getItem("isLogged")).user.email
         axios.get('http://localhost:8080/api/tasks', {
             "headers": { "authorization": "Bearer " + localStorage.getItem("token") }
         })
@@ -63,6 +42,35 @@ export class TaskPlannerApp extends Component {
             .catch(error => {
                 console.log(error);
             });
+        axios.get('http://localhost:8080/api/users/email/' + email, {
+            "headers": { "authorization": "Bearer " + localStorage.getItem("token") }
+        })
+            .then(response => {
+                let logged = JSON.parse(localStorage.getItem("isLogged"))
+                logged.user = { name: response.data.fullname, email: response.data.email , id: response.data.id }
+                localStorage.setItem("isLogged",JSON.stringify(logged))
+                this.setState({ user: { name: response.data.fullname, email: response.data.email , id: response.data.id } })
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        this.state = { tasksList: [], user: { name: "", email: email}, drawer: false, modal: false };
+    }
+
+    openToggle = () => event => {
+        this.setState({ drawer: true })
+    }
+
+    closeToggle = () => event => {
+        this.setState({ drawer: false })
+    }
+
+    openModal = () => event => {
+        this.setState({ modal: true })
+    }
+
+    closeModal = () => event => {
+        this.setState({ modal: false })
     }
 
     render() {
