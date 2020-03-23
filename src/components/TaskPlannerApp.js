@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './TodoApp.css';
 import TaskList from "./TaskList";
 import Drawer from '@material-ui/core/Drawer';
@@ -13,6 +13,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Modal from '@material-ui/core/Modal';
 import { Filter } from './Filter';
+import axios from 'axios';
 
 export class TaskPlannerApp extends Component {
 
@@ -20,31 +21,32 @@ export class TaskPlannerApp extends Component {
         super(props);
         let email = JSON.parse(localStorage.getItem("isLogged")).user
         let user = JSON.parse(localStorage.getItem(email))
-        this.state = {tasksList: [], user: {name: user.fullname, email: email}, drawer:false, modal:false};
+        this.state = { tasksList: [], user: { name: user.fullname, email: email }, drawer: false, modal: false };
     }
 
     openToggle = () => event => {
-        this.setState({drawer:true})
+        this.setState({ drawer: true })
     }
 
     closeToggle = () => event => {
-        this.setState({drawer:false})
+        this.setState({ drawer: false })
     }
-    
+
     openModal = () => event => {
-        this.setState({modal:true})
+        this.setState({ modal: true })
     }
 
     closeModal = () => event => {
-        this.setState({modal:false})
+        this.setState({ modal: false })
     }
 
     componentDidMount() {
-        fetch('https://ieti-todo-back.herokuapp.com/tasks')
-            .then(response => response.json())
-            .then(data => {
-                let tasks = [];                
-                data.forEach(function (task) {
+        axios.get('http://localhost:8080/api/tasks', {
+            "headers": { "authorization": "Bearer " + localStorage.getItem("token") }
+        })
+            .then(response => {
+                let tasks = [];
+                response.data.forEach(function (task) {
                     tasks.push({
                         description: task.description,
                         responsible: {
@@ -56,7 +58,10 @@ export class TaskPlannerApp extends Component {
                     })
 
                 });
-                this.setState({tasksList: tasks});
+                this.setState({ tasksList: tasks });
+            })
+            .catch(error => {
+                console.log(error);
             });
     }
 
@@ -69,26 +74,26 @@ export class TaskPlannerApp extends Component {
                 </Modal>
                 <Drawer open={this.state.drawer} onClose={this.closeToggle()}>
                     <Typography align="center"> User Profile </Typography>
-                    <Fab type = "submit"  size="small" href="/userProfile">
-                        <FaceIcon fontSize="small"/>
+                    <Fab type="submit" size="small" href="/userProfile">
+                        <FaceIcon fontSize="small" />
                     </Fab>
                     <Divider />
                     <Typography>User: {this.state.user.name}</Typography>
                     <Typography>Email: {this.state.user.email}</Typography>
-                    <Fab type = "submit" size="small">
-                        <ExitToAppIcon fontSize="small"/>
+                    <Fab type="submit" size="small">
+                        <ExitToAppIcon fontSize="small" />
                     </Fab>
                 </Drawer>
                 <IconButton onClick={this.openToggle()} className="menuFab" type="submit">
                     <MenuIcon />
                 </IconButton>
-                <br/>
-                <br/>                
-                <TaskList taskList={items} filter={JSON.parse(localStorage.getItem("filter"))}/>
-                <Fab type = "submit" variant = "round" size="small" className="fab" href="/newTask">
+                <br />
+                <br />
+                <TaskList taskList={items} filter={JSON.parse(localStorage.getItem("filter"))} />
+                <Fab type="submit" variant="round" size="small" className="fab" href="/newTask">
                     <AddIcon />
                 </Fab>
-                <Fab type = "submit" variant = "round" size="small" className="fab" onClick={this.openModal()}>
+                <Fab type="submit" variant="round" size="small" className="fab" onClick={this.openModal()}>
                     <FilterListIcon />
                 </Fab>
             </div>

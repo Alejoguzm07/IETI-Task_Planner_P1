@@ -8,23 +8,36 @@ import InputLabel from '@material-ui/core/InputLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
+import jwt from 'jsonwebtoken';
 import './Login.css'
 
 
-export class Login extends React.Component{
+export class Login extends React.Component {
 
-    clickHandler = (e)=>{
-        e.preventDefault();  
+    clickHandler = (e) => {
+        e.preventDefault();
         var email = document.querySelector('#email').value;
         var pass = document.querySelector('#password').value;
         const correctPass = JSON.parse(localStorage.getItem(email)).password;
-        if(correctPass === pass){
-            localStorage.setItem("isLogged", JSON.stringify({"loggedIn":'true',"user":email}));
+        axios.post('http://localhost:8080/login', {
+            email: email,
+            password: pass
+        })
+            .then(response => {
+                localStorage.setItem("token", response.data.accessToken);
+                localStorage.setItem("isLogged", JSON.stringify({ "loggedIn": 'true', "user": jwt.decode(response.data.accessToken).sub }));
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        if (correctPass === pass) {
+            
         }
         window.location.href = "/";
     }
 
-    render(){
+    render() {
         return (
             <React.Fragment>
                 <CssBaseline />
@@ -37,12 +50,12 @@ export class Login extends React.Component{
                         <form className="form">
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="email">Email Address</InputLabel>
-                                <Input 
-                                    id="email" 
-                                    name="email" 
-                                    autoComplete="email" 
-                                    autoFocus 
-                                    />
+                                <Input
+                                    id="email"
+                                    name="email"
+                                    autoComplete="email"
+                                    autoFocus
+                                />
                             </FormControl>
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="password">Password</InputLabel>
@@ -60,7 +73,7 @@ export class Login extends React.Component{
                                 color="primary"
                                 className="submit"
                                 onClick={this.clickHandler}
-                                >
+                            >
                                 Sign in
                             </Button>
                         </form>
